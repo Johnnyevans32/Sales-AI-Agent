@@ -9,3 +9,4 @@ httpx==0.28.1
 python-multipart==0.0.20
 loguru==0.7.3
 numpy<2.0.0
+langchain_text_splitters==0.3.8
