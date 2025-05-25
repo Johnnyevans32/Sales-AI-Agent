@@ -1,5 +1,6 @@
 import json
 import re
+import traceback
 from typing import Any, Dict, List, Optional
 
 import openai
@@ -138,6 +139,7 @@ class LLMService:
                 ]
             return []
         except Exception as e:
+            traceback.print_exc()
             logger.error(f"Error in tool usage decision: {str(e)}")
             return []
 
@@ -242,15 +244,14 @@ class LLMService:
         message = response.choices[0].message
 
         result = {"content": message.content or "", "tool_calls": None}
-
         # Handle tool calls in the response
-        if "tool_calls" in message:
+        if message.tool_calls:
             result["tool_calls"] = [
                 {
-                    "tool_name": tool_call["function"]["name"],
-                    "parameters": json.loads(tool_call["function"]["arguments"]),
+                    "tool_name": tool_call.function.name,
+                    "parameters": json.loads(tool_call.function.arguments),
                 }
-                for tool_call in message["tool_calls"]
+                for tool_call in message.tool_calls
             ]
 
         return result
