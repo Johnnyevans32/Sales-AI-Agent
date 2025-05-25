@@ -13,6 +13,12 @@ An intelligent sales agent that processes prospect messages, analyzes them in co
 - 🔍 Tool usage logging
 - 📈 Performance monitoring
 
+## Deployment
+
+The API is currently deployed and available at:
+
+- API Documentation (Swagger UI): [https://sales-ai-agent-brw2.onrender.com/docs](https://sales-ai-agent-brw2.onrender.com/docs)
+
 ## Project Structure
 ```
 .
@@ -175,4 +181,4 @@ The system follows clean architecture principles:
 
 ## License
 
-MIT License 
+MIT License
