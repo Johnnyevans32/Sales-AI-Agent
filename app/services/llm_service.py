@@ -115,7 +115,6 @@ class LLMService:
                 tools=tools,
             )
             content = re.sub(r"```json\s*|\s*```", "", response["content"]).strip()
-
             if response["tool_calls"]:
                 tool_calls = []
                 for tool_data in response["tool_calls"]:
@@ -123,11 +122,6 @@ class LLMService:
                 return tool_calls
 
             content_data = json.loads(content) if content else {}
-            if response["tool_calls"]:
-                tool_calls = []
-                for tool_data in response["tool_calls"]:
-                    tool_calls.append(ToolCall(**tool_data))
-                return tool_calls
 
             if "detailed_analysis" in content_data:
                 return [
@@ -242,7 +236,6 @@ class LLMService:
 
         response = self.client.chat.completions.create(**payload)
         message = response.choices[0].message
-
         result = {"content": message.content or "", "tool_calls": None}
         # Handle tool calls in the response
         if message.tool_calls:
