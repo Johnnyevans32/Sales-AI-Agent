@@ -274,7 +274,7 @@ class KnowledgeAugmentationTool:
 
         # Load all text files from the knowledge base directory
         for file_path in self.knowledge_base_path.glob("*.txt"):
-            with open(file_path, "r") as f:
+            with open(file_path, "r", encoding="utf-8") as f:
                 content = f.read()
                 # Split document into chunks
                 document_chunks = self._chunk_document(content, file_path.name)
@@ -302,6 +302,7 @@ class KnowledgeAugmentationTool:
                 f"{self.voyage_base_url}/v1/embeddings",
                 json={"input": texts, "model": "voyage-3.5", "input_type": "document"},
                 headers=config["headers"],
+                timeout=30,
             )
             response.raise_for_status()
             return [item["embedding"] for item in response.json()["data"]]
@@ -323,6 +324,7 @@ class KnowledgeAugmentationTool:
                 f"{self.voyage_base_url}/v1/embeddings",
                 json={"input": query, "model": "voyage-3.5", "input_type": "query"},
                 headers=config["headers"],
+                timeout=30,
             )
             response.raise_for_status()
             return response.json()["data"][0]["embedding"]

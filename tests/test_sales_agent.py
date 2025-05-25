@@ -4,7 +4,11 @@ from datetime import datetime
 import pytest
 from dotenv import load_dotenv
 
-from app.models.base import ConversationContext, Message
+from app.models.base import (
+    ActionableOutput,
+    ConversationContext,
+    Message,
+)
 from app.services.llm_service import LLMService
 from app.tools.knowledge_tool import KnowledgeAugmentationTool
 
@@ -42,12 +46,14 @@ def sample_conversation():
             content="What's the pricing like? And do you have any case studies from the technology industry?",
             timestamp=datetime.now(),
         ),
-        prospect_id="TEST123",
+        prospect_id="PROSPECT001",
     )
 
 
 @pytest.mark.asyncio
-async def test_message_analysis(llm_service, sample_conversation):
+async def test_message_analysis(
+    llm_service: LLMService, sample_conversation: ConversationContext
+) -> None:
     """Test the message analysis functionality."""
     analysis = await llm_service.analyze_message(sample_conversation)
 
@@ -58,9 +64,12 @@ async def test_message_analysis(llm_service, sample_conversation):
     assert len(analysis.key_points) > 0
 
 
-def test_knowledge_tool_fetch_prospect(knowledge_tool):
+@pytest.mark.asyncio
+def test_knowledge_tool_fetch_prospect(
+    knowledge_tool: KnowledgeAugmentationTool,
+) -> None:
     """Test the prospect details fetching functionality."""
-    details = knowledge_tool.fetch_prospect_details("TEST123")
+    details = knowledge_tool.fetch_prospect_details("PROSPECT001")
 
     assert isinstance(details, dict)
     assert "prospect_id" in details
@@ -68,7 +77,8 @@ def test_knowledge_tool_fetch_prospect(knowledge_tool):
     assert "industry" in details
 
 
-def test_knowledge_tool_query(knowledge_tool):
+@pytest.mark.asyncio
+def test_knowledge_tool_query(knowledge_tool: KnowledgeAugmentationTool) -> None:
     """Test the knowledge base query functionality."""
     results = knowledge_tool.query_knowledge_base(
         "pricing information for technology companies"
@@ -84,50 +94,26 @@ def test_knowledge_tool_query(knowledge_tool):
 
 @pytest.mark.asyncio
 async def test_full_response_generation(
-    llm_service, knowledge_tool, sample_conversation
-):
+    llm_service: LLMService,
+    knowledge_tool: KnowledgeAugmentationTool,
+    sample_conversation: ConversationContext,
+) -> None:
     """Test the complete response generation process."""
-    # First analyze the message
     analysis = await llm_service.analyze_message(sample_conversation)
 
-    # Get tool results
-    tool_calls = []
-
-    # Fetch prospect details
-    prospect_details = knowledge_tool.process_tool_call(
-        "fetch_prospect_details", {"prospect_id": sample_conversation.prospect_id}
-    )
-    tool_calls.append(
-        {
-            "tool_name": "fetch_prospect_details",
-            "parameters": {"prospect_id": sample_conversation.prospect_id},
-            "result": prospect_details,
-        }
+    tool_calls = await llm_service.decide_tool_usage(
+        context=sample_conversation, analysis=analysis, tools=knowledge_tool.tools
     )
 
-    # Query knowledge base
-    knowledge_results = knowledge_tool.process_tool_call(
-        "query_knowledge_base",
-        {
-            "query": f"{analysis.intent} {sample_conversation.current_prospect_message.content}",
-            "filters": {"entities": analysis.entities},
-        },
-    )
-    tool_calls.append(
-        {
-            "tool_name": "query_knowledge_base",
-            "parameters": {
-                "query": f"{analysis.intent} {sample_conversation.current_prospect_message.content}",
-                "filters": {"entities": analysis.entities},
-            },
-            "result": knowledge_results,
-        }
-    )
+    if tool_calls and tool_calls[0].tool_name == "clarification_needed":
+        output = ActionableOutput(**tool_calls[0].parameters)
 
-    # Generate final response
-    output = await llm_service.generate_response(
-        context=sample_conversation, analysis=analysis, tool_results=tool_calls
-    )
+    else:
+        tool_results = await knowledge_tool.process_tool_calls(tool_calls)
+
+        output = await llm_service.generate_response(
+            context=sample_conversation, analysis=analysis, tool_results=tool_results
+        )
 
     assert isinstance(output.detailed_analysis, str)
     assert isinstance(output.suggested_response_draft, str)

@@ -7,16 +7,16 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-from ..models.base import (
+from app.models.base import (
     ActionableOutput,
     ConversationContext,
     ProcessMessageResponse,
     ToolStatus,
     ToolUsageLog,
 )
-from ..services.llm_service import LLMService
-from ..services.metrics_service import MetricsService
-from ..tools.knowledge_tool import KnowledgeAugmentationTool
+from app.services.llm_service import LLMService
+from app.services.metrics_service import MetricsService
+from app.tools.knowledge_tool import KnowledgeAugmentationTool
 
 # Load environment variables
 load_dotenv()
@@ -123,7 +123,7 @@ async def process_message(context: ConversationContext):
         traceback.print_exc()
         raise HTTPException(
             status_code=500, detail=f"Error processing message: {str(e)}"
-        )
+        ) from e
 
 
 @app.get("/health")
@@ -142,7 +142,7 @@ async def get_performance_metrics():
         traceback.print_exc()
         raise HTTPException(
             status_code=500, detail=f"Error getting performance metrics: {str(e)}"
-        )
+        ) from e
 
 
 @app.get("/metrics/historical", response_model=Dict[str, Any])
@@ -155,4 +155,4 @@ async def get_historical_metrics(days: int = 7):
         traceback.print_exc()
         raise HTTPException(
             status_code=500, detail=f"Error getting historical metrics: {str(e)}"
-        )
+        ) from e

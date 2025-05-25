@@ -5,7 +5,7 @@ from typing import Any, Dict, List, Optional
 import openai
 from loguru import logger
 
-from ..models.base import (
+from app.models.base import (
     ActionableOutput,
     AnalysisResult,
     ConversationContext,
@@ -232,8 +232,7 @@ class LLMService:
             "messages": messages,
             "temperature": 0.7,
             "max_tokens": 1000,
-            "response_format": {"type": "json_object"},
-            "tool_choice": "auto" if tools else "none",
+            "tool_choice": "auto" if tools else None,
         }
 
         if tools:

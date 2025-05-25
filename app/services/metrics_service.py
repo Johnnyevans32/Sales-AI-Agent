@@ -32,7 +32,7 @@ class MetricsService:
         log_file = (
             self.logs_dir / f"tool_usage_{datetime.now().strftime('%Y-%m-%d')}.jsonl"
         )
-        with open(log_file, "a") as f:
+        with open(log_file, "a", encoding="utf-8") as f:
             f.write(log.json() + "\n")
 
         if log.status:
@@ -153,7 +153,7 @@ class MetricsService:
                 "avg_confidence": 0,
             }
 
-            with open(log_file, "r") as f:
+            with open(log_file, "r", encoding="utf-8") as f:
                 logs = [ToolUsageLog.model_validate_json(line) for line in f]
 
                 if not logs:
