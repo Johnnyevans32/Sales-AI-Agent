@@ -62,6 +62,7 @@ cp .env.example .env
 Required environment variables:
 ```
 OPENAI_API_KEY=your_api_key
+VOYAGE_API_KEY=your_voyage_key
 ```
 
 ## Running the Application
@@ -170,14 +171,6 @@ The system follows clean architecture principles:
    - Pydantic models
    - Data validation
    - Type safety
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
 
 ## License
 
