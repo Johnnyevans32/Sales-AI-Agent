@@ -36,7 +36,6 @@ class MetricsService:
             f.write(log.model_dump_json() + "\n")
 
         if log.status:
-            # Update metrics
             self.metrics["tool_invocations"]["total"] += 1
             if log.status == ToolStatus.SUCCESS:
                 self.metrics["tool_invocations"]["success"] += 1
@@ -45,7 +44,6 @@ class MetricsService:
             elif log.status == ToolStatus.FLAG_FOR_REVIEW:
                 self.metrics["tool_invocations"]["human_review"] += 1
 
-        # Update latency metrics
         self.metrics["latency"]["total"] += log.latency_ms
         self.metrics["latency"]["count"] += 1
         self.metrics["latency"]["min"] = min(
@@ -56,7 +54,6 @@ class MetricsService:
         )
 
         if log.confidence_score:
-            # Update confidence score metrics
             self.metrics["confidence_scores"]["total"] += log.confidence_score
             self.metrics["confidence_scores"]["count"] += 1
             self.metrics["confidence_scores"]["min"] = min(
@@ -160,18 +157,32 @@ class MetricsService:
                     continue
 
                 daily_metrics["tool_invocations"] = len(logs)
-                daily_metrics["success_rate"] = sum(
-                    1 for log in logs if log.status == ToolStatus.SUCCESS
-                ) / len(logs)
-                daily_metrics["error_rate"] = sum(
-                    1 for log in logs if log.status == ToolStatus.ERROR
-                ) / len(logs)
+                status_logs = [log for log in logs if log.status is not None]
+                daily_metrics["success_rate"] = (
+                    sum(1 for log in status_logs if log.status == ToolStatus.SUCCESS)
+                    / len(status_logs)
+                    if status_logs
+                    else 0
+                )
+                daily_metrics["error_rate"] = (
+                    sum(1 for log in status_logs if log.status == ToolStatus.ERROR)
+                    / len(status_logs)
+                    if status_logs
+                    else 0
+                )
                 daily_metrics["avg_latency"] = sum(
                     log.latency_ms for log in logs
                 ) / len(logs)
-                daily_metrics["avg_confidence"] = sum(
-                    log.confidence_score for log in logs
-                ) / len(logs)
+                valid_confidence_scores = [
+                    log.confidence_score
+                    for log in logs
+                    if log.confidence_score is not None
+                ]
+                daily_metrics["avg_confidence"] = (
+                    sum(valid_confidence_scores) / len(valid_confidence_scores)
+                    if valid_confidence_scores
+                    else 0
+                )
 
             historical_metrics.append(daily_metrics)
 

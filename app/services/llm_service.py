@@ -67,8 +67,6 @@ class LLMService:
         - If fields are mentioned but unclear, ask which specific fields are needed
         - If entities are mentioned but unclear, ask which specific entities to filter by
 
-        If no clarification is needed, use the provided tools to make tool calls.
-
         If clarification is needed, return a JSON object in this structure:
         {
             "detailed_analysis": "string (explanation of why clarification is needed)",
@@ -185,14 +183,13 @@ class LLMService:
                 }
             ],
             "tool_usage_log": [
-                // A log of which tools/sub-functions were called in the tool results, with what inputs, and a summary of their outputs. This is crucial for debugging and evaluation.
                 {
                     "tool_name": "string",
                     "parameters": {"param": "value"},
                     "result": {"result": "value"},
                     "summary": "string"
                 }
-            ],
+            ] (A log of which tools/sub-functions were called in the tool results, with what inputs, and a summary of their outputs. This is crucial for debugging and evaluation.),
             "confidence_score": float (0.0 to 1.0) (An estimated confidence score in the suggested_response_draft and internal_next_steps),
             "reasoning_trace": "string (explanation of why chose certain tools or formulated a particular response.)"
         }"""
@@ -226,7 +223,7 @@ class LLMService:
             - tool_calls: Optional[List[Dict]] - List of tool calls if any
         """
         payload = {
-            "model": "gpt-4",
+            "model": "gpt-4-turbo",
             "messages": messages,
             "temperature": 0.7,
             "max_tokens": 1000,
