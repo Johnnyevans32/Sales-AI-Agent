@@ -3,6 +3,7 @@ from enum import Enum
 from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel, Field
+from pydantic.config import ConfigDict
 
 
 class Message(BaseModel):
@@ -15,6 +16,31 @@ class ConversationContext(BaseModel):
     conversation_history: List[Message]
     current_prospect_message: Message
     prospect_id: Optional[str] = None
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "conversation_history": [
+                    {
+                        "sender": "prospect",
+                        "content": "Hi, I'm looking for a sales tool that can help our team be more efficient. Can you tell me about your product?",
+                        "timestamp": "2023-05-17T10:00:00",
+                    },
+                    {
+                        "sender": "agent",
+                        "content": "Hi there! Our AI-powered sales platform helps teams close more deals with less work. It includes automated follow-ups, smart lead prioritization, and AI-assisted email drafting. Would you like to know more about any specific features?",
+                        "timestamp": "2023-05-17T10:01:00",
+                    },
+                ],
+                "current_prospect_message": {
+                    "sender": "prospect",
+                    "content": "Are your services available in my location?",
+                    "timestamp": "2025-05-25T18:27:19.371Z",
+                },
+                "prospect_id": "PROSPECT001",
+            }
+        },
+    )
 
 
 class AnalysisResult(BaseModel):
