@@ -235,6 +235,7 @@ class LLMService:
 
         response = self.client.chat.completions.create(**payload)
         message = response.choices[0].message
+        print(message)
         result = {"content": message.content or "", "tool_calls": None}
         # Handle tool calls in the response
         if message.tool_calls:
