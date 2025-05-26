@@ -38,8 +38,8 @@ The API is currently deployed and available at:
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ai-sales-assistant.git
-cd ai-sales-assistant
+git clone https://github.com/Johnnyevans32/Sales-AI-Agent
+cd sales-ai-agent
 ```
 
 2. Create and activate a virtual environment:
