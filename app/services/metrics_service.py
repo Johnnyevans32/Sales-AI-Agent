@@ -33,7 +33,7 @@ class MetricsService:
             self.logs_dir / f"tool_usage_{datetime.now().strftime('%Y-%m-%d')}.jsonl"
         )
         with open(log_file, "a", encoding="utf-8") as f:
-            f.write(log.json() + "\n")
+            f.write(log.model_dump_json() + "\n")
 
         if log.status:
             # Update metrics

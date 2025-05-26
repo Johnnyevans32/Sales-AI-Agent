@@ -69,8 +69,9 @@ class ToolUsageLog(BaseModel):
     clarification_needed: Optional[bool] = None
     clarification_reason: Optional[str] = None
 
-    class Config:
-        json_encoders = {datetime: lambda v: v.isoformat()}
+    model_config = {
+        "json_schema_extra": {"json_encoders": {datetime: lambda v: v.isoformat()}}
+    }
 
 
 class ProcessMessageResponse(BaseModel):

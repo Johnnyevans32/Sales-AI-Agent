@@ -64,7 +64,6 @@ async def test_message_analysis(
     assert len(analysis.key_points) > 0
 
 
-@pytest.mark.asyncio
 def test_knowledge_tool_fetch_prospect(
     knowledge_tool: KnowledgeAugmentationTool,
 ) -> None:
@@ -77,7 +76,6 @@ def test_knowledge_tool_fetch_prospect(
     assert "industry" in details
 
 
-@pytest.mark.asyncio
 def test_knowledge_tool_query(knowledge_tool: KnowledgeAugmentationTool) -> None:
     """Test the knowledge base query functionality."""
     results = knowledge_tool.query_knowledge_base(
