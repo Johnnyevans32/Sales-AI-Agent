@@ -185,7 +185,7 @@ class LLMService:
                 }
             ],
             "tool_usage_log": [
-                // A log of which tools/sub-functions were called, with what inputs, and a summary of their outputs. This is crucial for debugging and evaluation.
+                // A log of which tools/sub-functions were called in the tool results, with what inputs, and a summary of their outputs. This is crucial for debugging and evaluation.
                 {
                     "tool_name": "string",
                     "parameters": {"param": "value"},

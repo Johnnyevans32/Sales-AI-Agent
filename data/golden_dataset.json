@@ -1,0 +1,371 @@
+{
+  "conversation_examples": [
+    {
+      "conversation_turn": {
+        "input": "Hi, I'm interested in learning more about your AI sales assistant. We're a mid-sized tech company looking to improve our sales process.",
+        "expected_analysis": {
+          "intent": "initial_inquiry",
+          "entities": ["AI sales assistant", "tech company", "sales process"],
+          "sentiment": 0.8,
+          "key_points": ["interest in product", "company size", "goal of process improvement"]
+        },
+        "expected_tool_calls": [
+          {
+            "tool_name": "query_knowledge_base",
+            "parameters": {
+              "query": "AI sales assistant overview and key features",
+              "filters": {
+                "min_similarity": 0.7,
+                "max_results": 3
+              }
+            }
+          }
+        ],
+        "expected_response": {
+          "suggested_response_draft": "Thank you for your interest in Sailer AI Sales Assistant! We're excited to help improve your sales process. Our platform offers real-time conversation analysis, intelligent response generation, and comprehensive analytics. Given that you're a mid-sized tech company, I think our Professional tier ($299/month) would be a great fit as it includes advanced conversation analysis, custom response templates, and CRM integration. Would you like me to share more specific details about how these features could benefit your team?",
+          "internal_next_steps": [
+            {
+              "action": "UPDATE_CRM",
+              "details": {
+                "field": "interest_level",
+                "value": "high"
+              }
+            },
+            {
+              "action": "SCHEDULE_FOLLOW_UP",
+              "details": {
+                "reason": "initial product interest",
+                "priority": "high",
+                "suggested_delay_hours": 24
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "conversation_turn": {
+        "input": "The pricing seems a bit high. We're currently using a basic CRM system that costs much less.",
+        "expected_analysis": {
+          "intent": "pricing_objection",
+          "entities": ["pricing", "CRM system"],
+          "sentiment": 0.4,
+          "key_points": ["cost concern", "current system comparison", "value perception"]
+        },
+        "expected_tool_calls": [
+          {
+            "tool_name": "query_knowledge_base",
+            "parameters": {
+              "query": "pricing objection handling ROI case studies",
+              "filters": {
+                "min_similarity": 0.7,
+                "max_results": 2
+              }
+            }
+          }
+        ],
+        "expected_response": {
+          "suggested_response_draft": "I understand your concern about the pricing. While our platform may have a higher initial cost than a basic CRM, our customers typically see a 3x ROI within the first 6 months through increased conversion rates and reduced response times. The key difference is that we're not just a CRM - we're an AI-powered sales assistant that actively helps your team close more deals. Would you like to see some specific case studies of how other tech companies have achieved this ROI?",
+          "internal_next_steps": [
+            {
+              "action": "UPDATE_OPPORTUNITY",
+              "details": {
+                "stage": "objection_handling",
+                "probability": 60,
+                "next_steps": "Share ROI case studies and value proposition"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "conversation_turn": {
+        "input": "How long does it take to implement your system? We need something that can be up and running quickly.",
+        "expected_analysis": {
+          "intent": "implementation_inquiry",
+          "entities": ["implementation timeline", "urgency"],
+          "sentiment": 0.7,
+          "key_points": ["implementation duration", "time sensitivity", "deployment speed"]
+        },
+        "expected_tool_calls": [
+          {
+            "tool_name": "query_knowledge_base",
+            "parameters": {
+              "query": "implementation timeline setup deployment",
+              "filters": {
+                "min_similarity": 0.8,
+                "max_results": 2
+              }
+            }
+          }
+        ],
+        "expected_response": {
+          "suggested_response_draft": "Great question! Our implementation process is designed to be quick and efficient. The entire process takes just 4 weeks: Week 1 for setup and integration, Week 2 for team training, Week 3 for a pilot program, and Week 4 for full deployment. We also provide 24/7 technical support and a dedicated account manager throughout the process to ensure a smooth transition. Would you like me to outline a specific implementation plan for your team?",
+          "internal_next_steps": [
+            {
+              "action": "SCHEDULE_FOLLOW_UP",
+              "details": {
+                "reason": "implementation timeline discussion",
+                "priority": "medium",
+                "suggested_delay_hours": 48
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "conversation_turn": {
+        "input": "We're in the healthcare industry. How does your system handle HIPAA compliance?",
+        "expected_analysis": {
+          "intent": "compliance_inquiry",
+          "entities": ["healthcare", "HIPAA", "compliance"],
+          "sentiment": 0.6,
+          "key_points": ["industry-specific requirements", "compliance concerns", "security needs"]
+        },
+        "expected_tool_calls": [
+          {
+            "tool_name": "query_knowledge_base",
+            "parameters": {
+              "query": "HIPAA compliance healthcare industry security",
+              "filters": {
+                "min_similarity": 0.8,
+                "max_results": 2
+              }
+            }
+          }
+        ],
+        "expected_response": {
+          "suggested_response_draft": "Excellent question about HIPAA compliance. Our Enterprise tier is specifically designed for healthcare organizations and includes full HIPAA compliance support. We implement end-to-end encryption, maintain detailed audit logs, and ensure all data handling meets HIPAA requirements. We also provide specialized training for healthcare-specific communication protocols. Would you like me to arrange a call with our compliance team to discuss the specific security measures in detail?",
+          "internal_next_steps": [
+            {
+              "action": "FLAG_FOR_HUMAN_REVIEW",
+              "details": {
+                "reason": "compliance requirements discussion",
+                "priority": "high",
+                "notes": "Healthcare industry prospect with HIPAA compliance concerns"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "conversation_turn": {
+        "input": "Can you tell me more about the real-time conversation analysis feature? How does it work?",
+        "expected_analysis": {
+          "intent": "feature_inquiry",
+          "entities": ["real-time analysis", "conversation analysis"],
+          "sentiment": 0.8,
+          "key_points": ["interest in specific feature", "technical understanding", "implementation details"]
+        },
+        "expected_tool_calls": [
+          {
+            "tool_name": "query_knowledge_base",
+            "parameters": {
+              "query": "real-time conversation analysis sentiment intent detection",
+              "filters": {
+                "min_similarity": 0.8,
+                "max_results": 3
+              }
+            }
+          }
+        ],
+        "expected_response": {
+          "suggested_response_draft": "Our real-time conversation analysis is one of our most powerful features. It provides instant insights during sales conversations, including sentiment analysis to gauge prospect interest, intent detection to understand their needs, and entity recognition to identify key topics. The system also extracts key points automatically, helping your team focus on what matters most. Would you like to see a live demo of how it works in action?",
+          "internal_next_steps": [
+            {
+              "action": "SCHEDULE_FOLLOW_UP",
+              "details": {
+                "reason": "feature demonstration request",
+                "priority": "high",
+                "suggested_delay_hours": 24
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "conversation_turn": {
+        "input": "We're currently using CompetitorA's solution. How does your platform compare?",
+        "expected_analysis": {
+          "intent": "competitor_comparison",
+          "entities": ["CompetitorA", "competitor comparison"],
+          "sentiment": 0.5,
+          "key_points": ["current solution", "competitive analysis", "differentiation needs"]
+        },
+        "expected_tool_calls": [
+          {
+            "tool_name": "query_knowledge_base",
+            "parameters": {
+              "query": "competitor comparison value proposition differentiation",
+              "filters": {
+                "min_similarity": 0.7,
+                "max_results": 2
+              }
+            }
+          }
+        ],
+        "expected_response": {
+          "suggested_response_draft": "While CompetitorA offers a solid solution, Sailer AI Sales Assistant provides several key advantages. Our platform offers more advanced AI capabilities, including real-time conversation analysis and intelligent response generation. We also provide comprehensive analytics and reporting that go beyond basic CRM functionality. Would you like me to share a detailed comparison of specific features and how they could benefit your team?",
+          "internal_next_steps": [
+            {
+              "action": "UPDATE_OPPORTUNITY",
+              "details": {
+                "stage": "competitor_comparison",
+                "probability": 70,
+                "next_steps": "Prepare detailed feature comparison"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "conversation_turn": {
+        "input": "What kind of training and support do you provide? Our team is not very technical.",
+        "expected_analysis": {
+          "intent": "support_inquiry",
+          "entities": ["training", "support", "technical expertise"],
+          "sentiment": 0.6,
+          "key_points": ["training needs", "support requirements", "technical concerns"]
+        },
+        "expected_tool_calls": [
+          {
+            "tool_name": "query_knowledge_base",
+            "parameters": {
+              "query": "training support implementation team onboarding",
+              "filters": {
+                "min_similarity": 0.8,
+                "max_results": 2
+              }
+            }
+          }
+        ],
+        "expected_response": {
+          "suggested_response_draft": "We understand that not everyone is technical, which is why we've designed our training and support to be user-friendly. We provide comprehensive training sessions during implementation, 24/7 technical support, and a dedicated account manager. Our platform is designed to be intuitive, and we offer regular training sessions to ensure your team gets the most out of it. Would you like to schedule a demo to see how user-friendly our interface is?",
+          "internal_next_steps": [
+            {
+              "action": "SCHEDULE_FOLLOW_UP",
+              "details": {
+                "reason": "training and support discussion",
+                "priority": "high",
+                "suggested_delay_hours": 24
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "conversation_turn": {
+        "input": "We need to integrate with our existing Salesforce instance. Is that possible?",
+        "expected_analysis": {
+          "intent": "integration_inquiry",
+          "entities": ["Salesforce", "integration", "CRM"],
+          "sentiment": 0.7,
+          "key_points": ["existing system", "integration needs", "technical requirements"]
+        },
+        "expected_tool_calls": [
+          {
+            "tool_name": "query_knowledge_base",
+            "parameters": {
+              "query": "Salesforce integration CRM compatibility",
+              "filters": {
+                "min_similarity": 0.8,
+                "max_results": 2
+              }
+            }
+          }
+        ],
+        "expected_response": {
+          "suggested_response_draft": "Yes, absolutely! Our Professional and Enterprise tiers include seamless Salesforce integration. We can sync your existing Salesforce data, including contacts, opportunities, and activity history. The integration is bi-directional, so all interactions and insights from our platform will automatically update in Salesforce. Would you like me to arrange a technical overview of the integration process?",
+          "internal_next_steps": [
+            {
+              "action": "UPDATE_OPPORTUNITY",
+              "details": {
+                "stage": "technical_evaluation",
+                "probability": 80,
+                "next_steps": "Schedule technical integration overview"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "conversation_turn": {
+        "input": "Can you tell me more about the analytics and reporting features? What kind of insights can we expect?",
+        "expected_analysis": {
+          "intent": "analytics_inquiry",
+          "entities": ["analytics", "reporting", "insights"],
+          "sentiment": 0.8,
+          "key_points": ["data analysis", "reporting capabilities", "business intelligence"]
+        },
+        "expected_tool_calls": [
+          {
+            "tool_name": "query_knowledge_base",
+            "parameters": {
+              "query": "analytics reporting metrics performance tracking",
+              "filters": {
+                "min_similarity": 0.8,
+                "max_results": 3
+              }
+            }
+          }
+        ],
+        "expected_response": {
+          "suggested_response_draft": "Our analytics and reporting features provide comprehensive insights into your sales performance. You'll get detailed conversation metrics, performance tracking, and ROI measurement. The system analyzes conversion rates, response times, and team effectiveness. You can also track individual rep performance and identify areas for improvement. Would you like to see some sample reports to understand the kind of insights you can expect?",
+          "internal_next_steps": [
+            {
+              "action": "SCHEDULE_FOLLOW_UP",
+              "details": {
+                "reason": "analytics demonstration",
+                "priority": "medium",
+                "suggested_delay_hours": 48
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "conversation_turn": {
+        "input": "We're a financial services company. How does your platform handle compliance and risk assessment?",
+        "expected_analysis": {
+          "intent": "industry_specific_inquiry",
+          "entities": ["financial services", "compliance", "risk assessment"],
+          "sentiment": 0.7,
+          "key_points": ["industry requirements", "compliance needs", "risk management"]
+        },
+        "expected_tool_calls": [
+          {
+            "tool_name": "query_knowledge_base",
+            "parameters": {
+              "query": "financial services compliance risk assessment regulatory reporting",
+              "filters": {
+                "min_similarity": 0.8,
+                "max_results": 2
+              }
+            }
+          }
+        ],
+        "expected_response": {
+          "suggested_response_draft": "Our platform is specifically designed to meet the needs of financial services companies. We offer robust compliance support, including risk assessment tools and regulatory reporting capabilities. The system helps ensure all communications meet industry standards and provides audit trails for compliance purposes. Would you like to speak with our compliance team about how we can meet your specific regulatory requirements?",
+          "internal_next_steps": [
+            {
+              "action": "FLAG_FOR_HUMAN_REVIEW",
+              "details": {
+                "reason": "compliance requirements discussion",
+                "priority": "high",
+                "notes": "Financial services prospect with compliance concerns"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+} 
