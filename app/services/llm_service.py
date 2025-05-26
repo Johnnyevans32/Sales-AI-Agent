@@ -185,6 +185,7 @@ class LLMService:
                 }
             ],
             "tool_usage_log": [
+                // Include only the tools used from the Tool Results
                 {
                     "tool_name": "string",
                     "parameters": {"param": "value"},
