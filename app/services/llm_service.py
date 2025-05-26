@@ -148,8 +148,8 @@ class LLMService:
         system_prompt = """You are an expert sales agent.
         Provide a JSON response with the following structure:
         {
-            "detailed_analysis": "string (detailed understanding of the situation)",
-            "suggested_response_draft": "string (response to send to prospect)",
+            "detailed_analysis": "string (detailed understanding of the prospect's message and context.)",
+            "suggested_response_draft": "string (A concise, helpful, and contextually appropriate response to the prospect)",
             "internal_next_steps": [
                 // Include only the relevant actions from the following types, but maintain their exact structure when used:
                 {
@@ -185,15 +185,16 @@ class LLMService:
                 }
             ],
             "tool_usage_log": [
-                // Include only the tools used from the Tool Results
+                // A log of which tools/sub-functions were called, with what inputs, and a summary of their outputs. This is crucial for debugging and evaluation.
                 {
                     "tool_name": "string",
                     "parameters": {"param": "value"},
-                    "result": {"result": "value"}
+                    "result": {"result": "value"},
+                    "summary": "string"
                 }
             ],
             "confidence_score": float (0.0 to 1.0) (An estimated confidence score in the suggested_response_draft and internal_next_steps),
-            "reasoning_trace": "string (explanation of decisions made)"
+            "reasoning_trace": "string (explanation of why chose certain tools or formulated a particular response.)"
         }"""
 
         try:
