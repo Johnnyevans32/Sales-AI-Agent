@@ -56,9 +56,9 @@ class LLMService:
         """Decide which tools to use based on the analysis and conversation context."""
         system_prompt = """You are an expert sales assistant that decides which tools to use to gather information.
         IMPORTANT RULES:
-        1. NEVER make assumptions about parameter values
-        2. If a required parameter is missing or ambiguous, return a clarification request
-        3. Only call tools when you have ALL required parameters with clear values
+        1. Use available tools to fetch information when possible instead of asking for clarification
+        2. If a required parameter is missing or ambiguous, first try to fetch it using available tools
+        3. Only ask for clarification if the information cannot be obtained through available tools
         4. For optional parameters, only include them if their value is explicitly clear
 
         When analyzing the conversation:
@@ -67,7 +67,7 @@ class LLMService:
         - If fields are mentioned but unclear, ask which specific fields are needed
         - If entities are mentioned but unclear, ask which specific entities to filter by
 
-        If clarification is needed, return a JSON object in this structure:
+        If clarification is needed, return a JSON object in this ActionableOutput format:
         {
             "detailed_analysis": "string (explanation of why clarification is needed)",
             "suggested_response_draft": "string (the actual clarification message to show to the user)",
